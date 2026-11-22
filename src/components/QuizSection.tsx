@@ -235,7 +235,7 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
                     <span>Qayta topshirish</span>
                   </button>
 
-                  {onViewCertificate && (
+                  {onViewCertificate && Math.round((score / questions.length) * 100) >= 70 ? (
                     <button
                       onClick={() =>
                         onViewCertificate(
@@ -243,11 +243,15 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
                           Math.round((score / questions.length) * 100)
                         )
                       }
-                      className="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-purple-600/30"
+                      className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-emerald-600/30"
                     >
-                      <Award className="w-4 h-4 text-pink-300" />
-                      <span>Sertifikatni Olish</span>
+                      <Award className="w-4 h-4 text-emerald-200" />
+                      <span>🏆 Sertifikatni Olish</span>
                     </button>
+                  ) : (
+                    <div className="px-5 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
+                      🔒 Sertifikat olish uchun kamida 70% natija kerak (Hozir: {Math.round((score / questions.length) * 100)}%)
+                    </div>
                   )}
                 </div>
               </div>

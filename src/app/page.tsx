@@ -87,7 +87,16 @@ export default function Home() {
         // 3. Fetch Quizzes
         const { data: dbQuizzes, error: qErr } = await supabase.from('quizzes').select('*');
         if (!qErr && dbQuizzes && dbQuizzes.length > 0) {
-          setQuizzes(dbQuizzes);
+          const merged = [...INITIAL_QUIZZES];
+          dbQuizzes.forEach((dbQ) => {
+            const idx = merged.findIndex((q) => q.subject_slug === dbQ.subject_slug);
+            if (idx >= 0) {
+              merged[idx] = dbQ;
+            } else {
+              merged.push(dbQ);
+            }
+          });
+          setQuizzes(merged);
         }
 
         // 4. Fetch Community Posts

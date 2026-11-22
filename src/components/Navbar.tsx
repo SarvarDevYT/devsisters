@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Sparkles, BookOpen, Video, Award, Users, ShieldCheck, Menu, X, Dumbbell } from 'lucide-react';
+import { Sparkles, BookOpen, Video, Award, Users, ShieldCheck, Menu, X, Dumbbell, LogIn } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,14 +66,14 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* Right Action: Admin Panel */}
+          {/* Right Action: Kirish */}
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/admin"
-              className="px-4 py-2 rounded-xl text-xs font-bold text-pink-300 bg-pink-500/10 border border-pink-500/30 hover:bg-pink-500/20 hover:border-pink-500/50 transition-all flex items-center gap-2"
+              className="px-5 py-2 rounded-xl text-xs font-bold text-pink-300 bg-pink-500/10 border border-pink-500/30 hover:bg-pink-500/20 hover:border-pink-500/50 transition-all flex items-center gap-2"
             >
-              <ShieldCheck className="w-4 h-4 text-pink-400" />
-              Admin Panel
+              <LogIn className="w-4 h-4 text-pink-400" />
+              Kirish
             </Link>
           </div>
 
@@ -82,9 +82,9 @@ export default function Navbar() {
             <Link
               href="/admin"
               className="p-2 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-300"
-              title="Admin Panel"
+              title="Kirish"
             >
-              <ShieldCheck className="w-5 h-5" />
+              <LogIn className="w-5 h-5" />
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -146,8 +146,8 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm text-pink-200 bg-gradient-to-r from-pink-600 to-purple-600 shadow-md shadow-pink-600/30"
             >
-              <ShieldCheck className="w-4 h-4" />
-              Admin Boshqaruv Paneliga Kirish
+              <LogIn className="w-4 h-4" />
+              Kirish
             </Link>
           </div>
         </div>

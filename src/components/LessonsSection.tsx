@@ -28,46 +28,44 @@ export default function LessonsSection({
   return (
     <section id="darslar" className="py-20 bg-[#110a22]/80 border-t border-purple-900/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold mb-3 uppercase tracking-wider">
-              <Video className="w-3.5 h-3.5" />
-              <span>Video Darslar</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Qisqa va Tushunarli Darslar
-            </h2>
-            <p className="text-slate-400 mt-2 text-base max-w-xl">
-              Har bir mavzu bosqichma-bosqich, o‘quvchilarga tushunarli tarzda tushuntiriladi.
-            </p>
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <Video className="w-3.5 h-3.5" />
+            <span>Video Darslar</span>
           </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Qisqa va Tushunarli Darslar
+          </h2>
+          <p className="text-slate-400 mt-2 text-base max-w-2xl">
+            Har bir mavzu bosqichma-bosqich, o‘quvchilarga tushunarli tarzda tushuntiriladi.
+          </p>
+        </div>
 
-          {/* Subjects filter */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        {/* Subjects filter */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-10">
+          <button
+            onClick={() => onSelectSubject('all')}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              currentSubject === 'all'
+                ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'
+            }`}
+          >
+            Hammasi ({lessons.length})
+          </button>
+          {teachers.map((teacher) => (
             <button
-              onClick={() => onSelectSubject('all')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                currentSubject === 'all'
+              key={teacher.slug}
+              onClick={() => onSelectSubject(teacher.slug)}
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                currentSubject === teacher.slug
                   ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
-                  : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                  : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'
               }`}
             >
-              Hammasi ({lessons.length})
+              {teacher.subject}
             </button>
-            {teachers.map((teacher) => (
-              <button
-                key={teacher.slug}
-                onClick={() => onSelectSubject(teacher.slug)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                  currentSubject === teacher.slug
-                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30'
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
-                }`}
-              >
-                {teacher.subject}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
 
         {/* Lessons List Grid */}

@@ -25,46 +25,44 @@ export default function TeachersSection({
     <section id="fanlar" className="py-20 bg-[#120a24]/60 border-y border-purple-900/30 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold mb-3 uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>7 ta Fan • 7 ta Tajribali Ustoz</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Fanlar va O‘qituvchilar
-            </h2>
-            <p className="text-slate-400 mt-2 text-base max-w-xl">
-              Har bir fanni o‘z sohasining mutaxassisi bo‘lgan kuchli ustozlar bilan o‘rganing.
-            </p>
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>7 ta Fan • 7 ta Tajribali Ustoz</span>
           </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Fanlar va O‘qituvchilar
+          </h2>
+          <p className="text-slate-400 mt-2 text-base max-w-2xl">
+            Har bir fanni o‘z sohasining mutaxassisi bo‘lgan kuchli ustozlar bilan o‘rganing.
+          </p>
+        </div>
 
-          {/* Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        {/* Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-10">
+          <button
+            onClick={() => setFilter('all')}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              filter === 'all'
+                ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'
+            }`}
+          >
+            Barcha Fanlar
+          </button>
+          {teachers.map((teacher) => (
             <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                filter === 'all'
+              key={teacher.slug}
+              onClick={() => setFilter(teacher.slug)}
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                filter === teacher.slug
                   ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30'
-                  : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                  : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'
               }`}
             >
-              Barcha Fanlar
+              {teacher.subject}
             </button>
-            {teachers.map((teacher) => (
-              <button
-                key={teacher.slug}
-                onClick={() => setFilter(teacher.slug)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                  filter === teacher.slug
-                    ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30'
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
-                }`}
-              >
-                {teacher.subject}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
 
         {/* Teachers Grid */}
@@ -96,7 +94,7 @@ export default function TeachersSection({
                       <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold bg-pink-500/15 text-pink-300 border border-pink-500/30 mb-1">
                         {teacher.subject}
                       </span>
-                      <h3 className="text-lg font-bold text-white group-hover:text-pink-300 transition-colors line-clamp-1">
+                      <h3 className="text-base font-bold text-white group-hover:text-pink-300 transition-colors leading-snug">
                         {teacher.name}
                       </h3>
                     </div>

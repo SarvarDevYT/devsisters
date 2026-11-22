@@ -1,5 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#0d071d",
+};
 
 export const metadata: Metadata = {
   title: "devsisters.uz — Raqamli avlod qizlar uchun ta'lim platformasi",
@@ -13,6 +17,7 @@ export const metadata: Metadata = {
     locale: "uz_UZ",
     type: "website",
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

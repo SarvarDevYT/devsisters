@@ -6,12 +6,15 @@ import Hero from '@/components/Hero';
 import TeachersSection from '@/components/TeachersSection';
 import FeaturesSection from '@/components/FeaturesSection';
 import LessonsSection from '@/components/LessonsSection';
+import WebinarsSection from '@/components/WebinarsSection';
 import QuizSection from '@/components/QuizSection';
 import PracticeSection from '@/components/PracticeSection';
 import CommunitySection from '@/components/CommunitySection';
 import RoadmapSection from '@/components/RoadmapSection';
 import Footer from '@/components/Footer';
 import VideoModal from '@/components/VideoModal';
+import CertificateModal from '@/components/CertificateModal';
+import AiTutorModal from '@/components/AiTutorModal';
 
 import { Teacher, Lesson, Quiz, PracticeItem, CommunityPost } from '@/lib/types';
 import {
@@ -22,6 +25,7 @@ import {
   INITIAL_POSTS,
 } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
+import { getStoredUser } from '@/lib/auth';
 
 export default function Home() {
   const [teachers, setTeachers] = useState<Teacher[]>(INITIAL_TEACHERS);
@@ -32,6 +36,19 @@ export default function Home() {
 
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [activeVideoLesson, setActiveVideoLesson] = useState<Lesson | null>(null);
+
+  // Certificate Modal state
+  const [certData, setCertData] = useState<{
+    isOpen: boolean;
+    courseName: string;
+    scorePercent: number;
+    studentName: string;
+  }>({
+    isOpen: false,
+    courseName: 'Umumiy Ta‘lim Kursi',
+    scorePercent: 100,
+    studentName: 'O‘quvchi Qiz',
+  });
 
   // Load live data from Supabase & localStorage
   useEffect(() => {
@@ -117,6 +134,16 @@ export default function Home() {
     }
   };
 
+  const handleOpenCertificate = (courseName: string, scorePercent: number) => {
+    const user = getStoredUser();
+    setCertData({
+      isOpen: true,
+      courseName: courseName || 'devsisters.uz Ta‘lim Dasturi',
+      scorePercent: scorePercent || 100,
+      studentName: user?.name || 'Munisa Aliyeva',
+    });
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -140,7 +167,12 @@ export default function Home() {
           onOpenVideo={(lesson) => setActiveVideoLesson(lesson)}
         />
 
-        <QuizSection quizzes={quizzes} />
+        <WebinarsSection />
+
+        <QuizSection
+          quizzes={quizzes}
+          onViewCertificate={(course, score) => handleOpenCertificate(course, score)}
+        />
 
         <PracticeSection items={practiceItems} />
 
@@ -156,6 +188,18 @@ export default function Home() {
         lesson={activeVideoLesson}
         onClose={() => setActiveVideoLesson(null)}
       />
+
+      {/* Luxury Educational Certificate Modal */}
+      <CertificateModal
+        isOpen={certData.isOpen}
+        onClose={() => setCertData((prev) => ({ ...prev, isOpen: false }))}
+        studentName={certData.studentName}
+        courseName={certData.courseName}
+        scorePercent={certData.scorePercent}
+      />
+
+      {/* SisterAI 24/7 Smart Floating Tutor */}
+      <AiTutorModal />
     </div>
   );
 }

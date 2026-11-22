@@ -7,9 +7,10 @@ import confetti from 'canvas-confetti';
 
 interface QuizSectionProps {
   quizzes: Quiz[];
+  onViewCertificate?: (courseName: string, scorePercent: number) => void;
 }
 
-export default function QuizSection({ quizzes }: QuizSectionProps) {
+export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionProps) {
   const [activeQuizId, setActiveQuizId] = useState<string>(quizzes[0]?.id || '');
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -225,7 +226,7 @@ export default function QuizSection({ quizzes }: QuizSectionProps) {
                   </p>
                 </div>
 
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex flex-wrap items-center justify-center gap-4">
                   <button
                     onClick={() => handleRestart()}
                     className="px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-pink-600/30"
@@ -233,6 +234,21 @@ export default function QuizSection({ quizzes }: QuizSectionProps) {
                     <RotateCcw className="w-4 h-4" />
                     <span>Qayta topshirish</span>
                   </button>
+
+                  {onViewCertificate && (
+                    <button
+                      onClick={() =>
+                        onViewCertificate(
+                          activeQuiz.title,
+                          Math.round((score / questions.length) * 100)
+                        )
+                      }
+                      className="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-purple-600/30"
+                    >
+                      <Award className="w-4 h-4 text-pink-300" />
+                      <span>Sertifikatni Olish</span>
+                    </button>
+                  )}
                 </div>
               </div>
             )}

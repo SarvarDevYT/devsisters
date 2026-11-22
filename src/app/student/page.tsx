@@ -23,6 +23,7 @@ import { getStoredUser, setStoredUser } from '@/lib/auth';
 import { INITIAL_LESSONS, INITIAL_TEACHERS, INITIAL_QUIZZES, INITIAL_PRACTICE } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
 import VideoModal from '@/components/VideoModal';
+import CertificateModal from '@/components/CertificateModal';
 
 export default function StudentPage() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function StudentPage() {
 
   const [completedLessons, setCompletedLessons] = useState<Record<string, boolean>>({});
   const [activeVideo, setActiveVideo] = useState<Lesson | null>(null);
+  const [showCertModal, setShowCertModal] = useState<boolean>(false);
 
   useEffect(() => {
     const user = getStoredUser();
@@ -134,7 +136,7 @@ export default function StudentPage() {
           </div>
 
           {/* Stats Badges */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <div className="px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-center">
               <div className="flex items-center justify-center gap-1 text-amber-400 font-bold text-xs mb-0.5">
                 <Trophy className="w-4 h-4" />
@@ -150,6 +152,14 @@ export default function StudentPage() {
               </div>
               <p className="text-2xl font-black text-white">{progressPercent}%</p>
             </div>
+
+            <button
+              onClick={() => setShowCertModal(true)}
+              className="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-pink-600/20 transition-all"
+            >
+              <Award className="w-4 h-4 text-pink-200" />
+              <span>Sertifikatni Ko‘rish</span>
+            </button>
           </div>
         </div>
 
@@ -325,6 +335,17 @@ export default function StudentPage() {
         lesson={activeVideo}
         onClose={() => setActiveVideo(null)}
       />
+
+      {/* Student Official Certificate Modal */}
+      {currentUser && (
+        <CertificateModal
+          isOpen={showCertModal}
+          onClose={() => setShowCertModal(false)}
+          studentName={currentUser.name}
+          courseName="devsisters.uz Raqamli Avlod Ta‘lim Kursi"
+          scorePercent={progressPercent >= 50 ? 100 : 85}
+        />
+      )}
     </main>
   );
 }

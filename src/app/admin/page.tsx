@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ShieldCheck,
   Users,
@@ -19,13 +20,12 @@ import {
 } from 'lucide-react';
 import { Teacher, Lesson, User } from '@/lib/types';
 import { INITIAL_TEACHERS, INITIAL_LESSONS } from '@/lib/data';
-import { DEMO_USERS } from '@/lib/auth';
+import { DEMO_USERS, getStoredUser, setStoredUser } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminPage() {
+  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [passwordInput, setPasswordInput] = useState<string>('');
-  const [authError, setAuthError] = useState<string>('');
 
   const [activeTab, setActiveTab] = useState<'teachers' | 'lessons' | 'users'>('teachers');
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -46,13 +46,15 @@ export default function AdminPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [isNewUser, setIsNewUser] = useState<boolean>(false);
 
-  // Check existing session
+  // Check existing session: must be admin from unified login
   useEffect(() => {
-    const savedAuth = typeof window !== 'undefined' ? sessionStorage.getItem('devsisters_admin_auth') : null;
-    if (savedAuth === 'true') {
-      setIsAuthenticated(true);
+    const user = getStoredUser();
+    if (!user || user.role !== 'admin') {
+      router.push('/login');
+      return;
     }
-  }, []);
+    setIsAuthenticated(true);
+  }, [router]);
 
   // Fetch initial data
   useEffect(() => {
@@ -115,21 +117,9 @@ export default function AdminPage() {
     fetchData();
   }, [isAuthenticated]);
 
-  // Auth Handler
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (passwordInput === 'admin123' || passwordInput === 'devsisters2025') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('devsisters_admin_auth', 'true');
-      setAuthError('');
-    } else {
-      setAuthError('Maxfiy parol noto‘g‘ri kiritildi! (Maslahat: admin123)');
-    }
-  };
-
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem('devsisters_admin_auth');
+    setStoredUser(null);
+    router.push('/login');
   };
 
   // Save Teacher
@@ -294,58 +284,9 @@ export default function AdminPage() {
     setTimeout(() => setStatusMessage(null), 3000);
   };
 
-  // If not logged in, show Password prompt
+  // If not authenticated, redirecting to /login
   if (!isAuthenticated) {
-    return (
-      <main className="min-h-screen bg-[#0e071e] flex items-center justify-center p-4">
-        <div className="w-full max-w-md p-8 rounded-3xl bg-[#1b1035] border border-purple-800/50 shadow-2xl text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-pink-500/20">
-            <ShieldCheck className="w-8 h-8" />
-          </div>
-
-          <h2 className="text-2xl font-black text-white mb-2">devsisters.uz</h2>
-          <p className="text-xs sm:text-sm text-pink-300 font-semibold mb-6">
-            Admin Boshqaruv Paneliga Kirish
-          </p>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <input
-                type="password"
-                required
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder="Maxfiy parolni kiriting..."
-                className="w-full px-4 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-pink-500 text-sm text-center"
-              />
-            </div>
-
-            {authError && (
-              <p className="text-xs text-rose-400 font-medium bg-rose-500/10 p-3 rounded-xl border border-rose-500/20">
-                {authError}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-sm shadow-lg shadow-pink-600/30 hover:scale-[1.01] transition-all"
-            >
-              Kirish
-            </button>
-          </form>
-
-          <div className="mt-6 pt-6 border-t border-purple-900/40">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Bosh sahifaga qaytish</span>
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
+    return null;
   }
 
   return (

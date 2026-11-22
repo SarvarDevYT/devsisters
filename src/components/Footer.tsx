@@ -72,7 +72,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
-                  href="/admin"
+                  href="/login"
                   className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-semibold transition-colors"
                 >
                   <ShieldCheck className="w-4 h-4" />
@@ -80,7 +80,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li className="text-xs text-slate-500 pt-2">
-                O‘qituvchilar ma‘lumotlari, rasmlari va darslarini yangilash uchun maxfiy panel.
+                O‘quvchilar, o‘qituvchilar va administratorlar uchun yagona kirish portali.
               </li>
             </ul>
           </div>

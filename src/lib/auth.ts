@@ -123,6 +123,7 @@ export async function registerStudent(
   name: string,
   email: string,
   pass: string,
+  subject_slug?: string,
   phone?: string
 ): Promise<{ user?: User; error?: string }> {
   const cleanEmail = email.trim().toLowerCase();
@@ -133,6 +134,7 @@ export async function registerStudent(
     email: cleanEmail,
     password: pass.trim(),
     role: 'student',
+    subject_slug: subject_slug || 'arab-tili',
     phone: phone?.trim() || '',
     avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=600',
     points: 100, // Welcome bonus points!
@@ -153,4 +155,31 @@ export async function registerStudent(
 
   setStoredUser(newUser);
   return { user: newUser };
+}
+
+export async function updateUserSubject(userId: string, subjectSlug: string): Promise<User | null> {
+  const current = getStoredUser();
+  if (!current) return null;
+  const updated: User = { ...current, subject_slug: subjectSlug };
+  setStoredUser(updated);
+
+  // Update in local list
+  const localUsersJson = typeof window !== 'undefined' ? localStorage.getItem('devsisters_users_list') : null;
+  if (localUsersJson) {
+    const list: User[] = JSON.parse(localUsersJson);
+    const idx = list.findIndex((u) => u.id === userId);
+    if (idx !== -1) {
+      list[idx].subject_slug = subjectSlug;
+      localStorage.setItem('devsisters_users_list', JSON.stringify(list));
+    }
+  }
+
+  // Update in Supabase
+  try {
+    await supabase.from('users').update({ subject_slug: subjectSlug }).eq('id', userId);
+  } catch (e) {
+    console.warn('Supabase update subject:', e);
+  }
+
+  return updated;
 }

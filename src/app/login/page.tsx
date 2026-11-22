@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Sparkles, ArrowLeft, LogIn, UserPlus, Shield, GraduationCap, BookOpen, CheckCircle, AlertCircle } from 'lucide-react';
 import { loginUser, registerStudent, getStoredUser } from '@/lib/auth';
+import { INITIAL_TEACHERS } from '@/lib/data';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState<string>('arab-tili');
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -50,7 +52,7 @@ export default function LoginPage() {
           setLoading(false);
           return;
         }
-        const res = await registerStudent(name, email, password, phone);
+        const res = await registerStudent(name, email, password, selectedSubject, phone);
         if (res.error) {
           setErrorMessage(res.error);
         } else if (res.user) {
@@ -213,6 +215,37 @@ export default function LoginPage() {
                   placeholder="+998 90 123 45 67"
                   className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-pink-500 text-sm"
                 />
+              </div>
+            )}
+
+            {mode === 'register' && (
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+                  O‘rganmoqchi bo‘lgan faningizni tanlang:
+                </label>
+                <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+                  {INITIAL_TEACHERS.map((t) => {
+                    const isSel = selectedSubject === t.slug;
+                    return (
+                      <button
+                        key={t.slug}
+                        type="button"
+                        onClick={() => setSelectedSubject(t.slug)}
+                        className={`p-2.5 rounded-xl border text-left text-xs font-semibold flex items-center gap-2 transition-all ${
+                          isSel
+                            ? 'bg-pink-600/30 border-pink-500 text-white shadow-md shadow-pink-600/20'
+                            : 'bg-white/5 border-white/10 text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        <span className="text-sm">{isSel ? '🌸' : '📚'}</span>
+                        <div className="truncate">
+                          <p className="font-bold truncate text-white">{t.subject}</p>
+                          <p className="text-[10px] text-slate-400 truncate">{t.name}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
 

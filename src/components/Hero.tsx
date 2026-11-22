@@ -4,7 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, BookOpenCheck, CheckCircle2, HeartHandshake, Shield, Smartphone } from 'lucide-react';
 
-export default function Hero() {
+interface HeroProps {
+  onStartLearning?: () => void;
+}
+
+export default function Hero({ onStartLearning }: HeroProps) {
   return (
     <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
       {/* Background ambient lighting */}
@@ -35,13 +39,16 @@ export default function Hero() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <Link
-              href="#fanlar"
+            <button
+              onClick={() => {
+                if (onStartLearning) onStartLearning();
+                else window.location.href = '#fanlar';
+              }}
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold text-base shadow-xl shadow-pink-500/25 hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5"
             >
               <span>Darslarni Boshlash</span>
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </button>
             <Link
               href="#testlar"
               className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-base transition-all flex items-center justify-center gap-2.5"

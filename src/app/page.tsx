@@ -15,6 +15,7 @@ import Footer from '@/components/Footer';
 import VideoModal from '@/components/VideoModal';
 import CertificateModal from '@/components/CertificateModal';
 import AiTutorModal from '@/components/AiTutorModal';
+import OnboardingModal from '@/components/OnboardingModal';
 
 import { Teacher, Lesson, Quiz, PracticeItem, CommunityPost } from '@/lib/types';
 import {
@@ -36,6 +37,9 @@ export default function Home() {
 
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [activeVideoLesson, setActiveVideoLesson] = useState<Lesson | null>(null);
+
+  // Onboarding Modal for first-time visitors
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Certificate Modal state
   const [certData, setCertData] = useState<{
@@ -104,6 +108,18 @@ export default function Home() {
     }
 
     loadLiveData();
+
+    // Check if new visitor for onboarding
+    const activeUser = getStoredUser();
+    if (!activeUser) {
+      const seen = sessionStorage.getItem('devsisters_onboarding_seen');
+      if (!seen) {
+        const timer = setTimeout(() => {
+          setShowOnboarding(true);
+        }, 600);
+        return () => clearTimeout(timer);
+      }
+    }
   }, []);
 
   // Handle adding new community post
@@ -149,7 +165,7 @@ export default function Home() {
       <Navbar />
 
       <main className="flex-1">
-        <Hero />
+        <Hero onStartLearning={() => setShowOnboarding(true)} />
 
         <TeachersSection
           teachers={teachers}
@@ -200,6 +216,15 @@ export default function Home() {
 
       {/* SisterAI 24/7 Smart Floating Tutor */}
       <AiTutorModal />
+
+      {/* First-time Visitor Onboarding & Subject Selection Modal */}
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={() => {
+          setShowOnboarding(false);
+          sessionStorage.setItem('devsisters_onboarding_seen', 'true');
+        }}
+      />
     </div>
   );
 }

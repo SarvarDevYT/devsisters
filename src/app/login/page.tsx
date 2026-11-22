@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Sparkles, ArrowLeft, LogIn, UserPlus, Shield, GraduationCap, BookOpen, CheckCircle, AlertCircle } from 'lucide-react';
+import { Sparkles, ArrowLeft, LogIn, UserPlus, AlertCircle } from 'lucide-react';
 import { loginUser, registerStudent, getStoredUser } from '@/lib/auth';
 import { INITIAL_TEACHERS } from '@/lib/data';
 
@@ -64,21 +64,6 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  // Quick One-Click Demo Login
-  const handleQuickLogin = async (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setLoading(true);
-    setErrorMessage('');
-    const res = await loginUser(demoEmail, demoPass);
-    if (res.user) {
-      if (res.user.role === 'admin') router.push('/admin');
-      else if (res.user.role === 'teacher') router.push('/teacher');
-      else router.push('/student');
-    }
-    setLoading(false);
   };
 
   return (
@@ -258,41 +243,6 @@ export default function LoginPage() {
               <span>{loading ? 'Tekshirilmoqda...' : mode === 'login' ? 'Tizimga Kirish' : 'Hisob Yaratish'}</span>
             </button>
           </form>
-
-          {/* Quick Demo Access Bar */}
-          <div className="mt-8 pt-6 border-t border-purple-900/40">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 text-center">
-              Tezkor sinab ko‘rish (1 bosishda):
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('admin@devsisters.uz', 'admin123')}
-                className="p-2.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 hover:bg-purple-500/25 text-center text-xs font-bold transition-all flex flex-col items-center gap-1"
-              >
-                <Shield className="w-4 h-4 text-purple-400" />
-                <span>Admin</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('sevinch@devsisters.uz', 'teacher123')}
-                className="p-2.5 rounded-xl bg-pink-500/15 border border-pink-500/30 text-pink-300 hover:bg-pink-500/25 text-center text-xs font-bold transition-all flex flex-col items-center gap-1"
-              >
-                <GraduationCap className="w-4 h-4 text-pink-400" />
-                <span>O‘qituvchi</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('madina@devsisters.uz', 'student123')}
-                className="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25 text-center text-xs font-bold transition-all flex flex-col items-center gap-1"
-              >
-                <BookOpen className="w-4 h-4 text-emerald-400" />
-                <span>O‘quvchi</span>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 

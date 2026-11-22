@@ -477,24 +477,24 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-[#0e0720] text-slate-100 pb-20">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-[#160d2e]/90 backdrop-blur-md border-b border-purple-900/40 px-4 sm:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-40 bg-[#160d2e]/90 backdrop-blur-md border-b border-purple-900/40 px-3 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <Link
             href="/"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-colors"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-colors flex-shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Saytga qaytish</span>
+            <span className="hidden sm:inline">Saytga qaytish</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-pink-400" />
-            <h1 className="text-lg font-black text-white">devsisters.uz Admin Paneli</h1>
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+            <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-pink-400 flex-shrink-0" />
+            <h1 className="text-sm sm:text-lg font-black text-white truncate">devsisters.uz Admin Paneli</h1>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold border border-white/10 transition-colors"
+          className="px-3 sm:px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold border border-white/10 transition-colors flex-shrink-0"
         >
           Chiqish
         </button>
@@ -614,7 +614,7 @@ export default function AdminPage() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto">
+        <div className="flex items-center gap-2 sm:gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto scrollbar-none">
           <button
             onClick={() => {
               setActiveTab('teachers');

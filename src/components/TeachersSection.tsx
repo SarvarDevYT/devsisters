@@ -39,10 +39,10 @@ export default function TeachersSection({
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-10">
+        <div className="flex items-center gap-2 sm:gap-2.5 mb-8 sm:mb-10 overflow-x-auto pb-2 scrollbar-none sm:flex-wrap">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex-shrink-0 cursor-pointer ${
               filter === 'all'
                 ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30'
                 : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'
@@ -54,7 +54,7 @@ export default function TeachersSection({
             <button
               key={teacher.slug}
               onClick={() => setFilter(teacher.slug)}
-              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex-shrink-0 cursor-pointer ${
                 filter === teacher.slug
                   ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30'
                   : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'

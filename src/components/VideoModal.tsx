@@ -44,10 +44,10 @@ export default function VideoModal({ lesson, onClose }: VideoModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/90 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="w-full max-w-5xl rounded-3xl bg-[#140b2a] border border-purple-700/60 overflow-hidden shadow-2xl relative my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-5 bg-black/90 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="w-full max-w-5xl rounded-2xl sm:rounded-3xl bg-[#140b2a] border border-purple-700/60 overflow-hidden shadow-2xl relative my-4 sm:my-6">
         {/* Top YouTube Player Custom Header */}
-        <div className="flex flex-wrap items-center justify-between px-5 sm:px-7 py-3.5 border-b border-purple-900/40 bg-[#100824]/90 gap-3">
+        <div className="flex flex-wrap items-center justify-between px-3.5 sm:px-7 py-3 border-b border-purple-900/40 bg-[#100824]/90 gap-2 sm:gap-3">
           <div className="flex items-center gap-3 min-w-0">
             {/* YouTube Badge */}
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-red-600/20 border border-red-500/30 text-red-400 font-bold text-xs flex-shrink-0">
@@ -136,10 +136,10 @@ export default function VideoModal({ lesson, onClose }: VideoModalProps) {
             )}
 
             {/* Interaction Buttons */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={handleToggleComplete}
-                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   isCompleted
                     ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300'
                     : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
@@ -153,7 +153,7 @@ export default function VideoModal({ lesson, onClose }: VideoModalProps) {
 
               <button
                 onClick={handleShare}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-bold transition-colors"
+                className="flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-bold transition-colors"
               >
                 <Share2 className="w-4 h-4" />
                 <span>{copied ? 'Nusxalandi! ✨' : 'Ulashish'}</span>

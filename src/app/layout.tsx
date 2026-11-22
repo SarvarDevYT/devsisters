@@ -3,6 +3,9 @@ import "./globals.css";
 
 export const viewport: Viewport = {
   themeColor: "#0d071d",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export const metadata: Metadata = {
@@ -32,7 +35,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-screen bg-[#0d071d] text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-pink-500 selection:text-white antialiased">
+      <body className="min-h-screen w-full overflow-x-hidden relative bg-[#0d071d] text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-pink-500 selection:text-white antialiased">
         {children}
       </body>
     </html>

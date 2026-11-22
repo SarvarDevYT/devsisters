@@ -215,24 +215,24 @@ export default function StudentPage() {
   return (
     <main className="min-h-screen bg-[#0d071d] text-slate-100 pb-20">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-[#160d2e]/90 backdrop-blur-md border-b border-purple-900/40 px-4 sm:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-40 bg-[#160d2e]/90 backdrop-blur-md border-b border-purple-900/40 px-3 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <Link
             href="/"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-colors"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-colors flex-shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Saytga qaytish</span>
+            <span className="hidden sm:inline">Saytga qaytish</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-pink-400" />
-            <h1 className="text-lg font-black text-white">O‘quvchi Kabineti</h1>
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-pink-400 flex-shrink-0" />
+            <h1 className="text-sm sm:text-lg font-black text-white truncate">O‘quvchi Kabineti</h1>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold border border-white/10 transition-colors"
+          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold border border-white/10 transition-colors flex-shrink-0"
         >
           <LogOut className="w-4 h-4" />
           <span>Chiqish</span>
@@ -261,28 +261,28 @@ export default function StudentPage() {
           </div>
 
           {/* Stats Badges */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-            <div className="px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-center">
+          <div className="grid grid-cols-2 sm:flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3 w-full md:w-auto">
+            <div className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white/5 border border-white/10 text-center">
               <div className="flex items-center justify-center gap-1 text-amber-400 font-bold text-xs mb-0.5">
                 <Trophy className="w-4 h-4" />
                 <span>Ballaringiz</span>
               </div>
-              <p className="text-2xl font-black text-white">{currentUser.points || 100} ball</p>
+              <p className="text-xl sm:text-2xl font-black text-white">{currentUser.points || 100} ball</p>
             </div>
 
-            <div className="px-5 py-3 rounded-2xl bg-pink-500/10 border border-pink-500/20 text-center">
+            <div className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-pink-500/10 border border-pink-500/20 text-center">
               <div className="flex items-center justify-center gap-1 text-pink-400 font-bold text-xs mb-0.5">
                 <Flame className="w-4 h-4" />
                 <span>O‘zlashtirish</span>
               </div>
-              <p className="text-2xl font-black text-white">{progressPercent}%</p>
+              <p className="text-xl sm:text-2xl font-black text-white">{progressPercent}%</p>
             </div>
 
             {/* Smart Certificate Button (Locked or Unlocked) */}
             {isCertUnlocked ? (
               <button
                 onClick={() => setShowCertModal(true)}
-                className="px-5 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition-all cursor-pointer transform hover:scale-105"
+                className="col-span-2 sm:col-span-1 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all cursor-pointer transform hover:scale-105"
               >
                 <Award className="w-4 h-4 text-emerald-100" />
                 <span>🏆 Sertifikatni Olish</span>
@@ -290,7 +290,7 @@ export default function StudentPage() {
             ) : (
               <button
                 onClick={() => setShowLockedModal(true)}
-                className="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-xs flex items-center gap-2 border border-white/10 transition-all cursor-pointer hover:border-amber-500/40"
+                className="col-span-2 sm:col-span-1 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition-all cursor-pointer hover:border-amber-500/40 text-center"
               >
                 <Lock className="w-4 h-4 text-amber-400" />
                 <span>🔒 Sertifikat (Qulflangan)</span>
@@ -334,7 +334,7 @@ export default function StudentPage() {
         </div>
 
         {/* Tab switch */}
-        <div className="flex items-center gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto">
+        <div className="flex items-center gap-2 sm:gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab('lessons')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${

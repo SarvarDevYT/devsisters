@@ -57,8 +57,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#hamjamiyat" className="hover:text-pink-400 transition-colors">
-                  Qizlar hamjamiyati
+                <Link href="/login" className="hover:text-pink-400 transition-colors">
+                  Qizlar hamjamiyati (Chat)
                 </Link>
               </li>
             </ul>

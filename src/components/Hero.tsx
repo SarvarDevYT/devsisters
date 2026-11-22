@@ -17,13 +17,13 @@ export default function Hero({ onStartLearning }: HeroProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto">
           {/* Pill Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs sm:text-sm font-semibold mb-6 shadow-sm">
-            <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-[11px] sm:text-sm font-semibold mb-6 shadow-sm text-center leading-tight max-w-full">
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-400 animate-pulse flex-shrink-0" />
             <span>Raqamli avlod qizlar uchun milliy ta‘lim platformasi</span>
           </div>
 
           {/* Big Title */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-[1.15]">
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-white mb-5 sm:mb-6 leading-[1.15] break-words">
             Ilm olishda <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-rose-300 to-purple-400">
               devsisters.uz
@@ -32,7 +32,7 @@ export default function Hero({ onStartLearning }: HeroProps) {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-xl text-slate-300 font-normal leading-relaxed mb-10 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-lg lg:text-xl text-slate-300 font-normal leading-relaxed mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
             Qizlarga qulay, zamonaviy va mutlaqo bepul bilim olish muhiti. 
             Yetti fan, yetti professional ustoz va qulay raqamli platforma!
           </p>

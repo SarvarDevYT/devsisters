@@ -84,12 +84,12 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
         </div>
 
         {/* Quiz Selector tabs */}
-        <div className="flex items-center justify-center gap-3 mb-8 overflow-x-auto pb-2 scrollbar-none">
+        <div className="flex items-center sm:justify-center gap-2 sm:gap-3 mb-8 overflow-x-auto pb-2 px-1 scrollbar-none">
           {quizzes.map((q) => (
             <button
               key={q.id}
               onClick={() => handleRestart(q.id)}
-              className={`px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all ${
+              className={`px-4 sm:px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex-shrink-0 cursor-pointer ${
                 activeQuiz?.id === q.id
                   ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-lg shadow-pink-600/30'
                   : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5'
@@ -102,7 +102,7 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
 
         {/* Quiz Card */}
         {activeQuiz && questions.length > 0 && (
-          <div className="p-6 sm:p-10 rounded-3xl bg-[#1d1238] border border-purple-800/40 shadow-2xl backdrop-blur-xl">
+          <div className="p-5 sm:p-10 rounded-3xl bg-[#1d1238] border border-purple-800/40 shadow-2xl backdrop-blur-xl">
             {!isCompleted ? (
               <div>
                 {/* Progress bar */}
@@ -184,14 +184,14 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
                     <button
                       onClick={handleSubmitAnswer}
                       disabled={selectedOption === null}
-                      className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold text-sm shadow-lg shadow-pink-600/30 hover:shadow-pink-600/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold text-sm shadow-lg shadow-pink-600/30 hover:shadow-pink-600/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-center justify-center flex items-center"
                     >
                       Javobni Tekshirish
                     </button>
                   ) : (
                     <button
                       onClick={handleNext}
-                      className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-purple-600/30 hover:scale-[1.02] transition-all flex items-center gap-2"
+                      className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-purple-600/30 hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
                     >
                       <span>
                         {currentQuestionIdx + 1 < questions.length ? 'Keyingi Savol' : 'Natijani Ko‘rish'}
@@ -226,10 +226,10 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full">
                   <button
                     onClick={() => handleRestart()}
-                    className="px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-pink-600/30"
+                    className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-pink-600/30"
                   >
                     <RotateCcw className="w-4 h-4" />
                     <span>Qayta topshirish</span>
@@ -243,13 +243,13 @@ export default function QuizSection({ quizzes, onViewCertificate }: QuizSectionP
                           Math.round((score / questions.length) * 100)
                         )
                       }
-                      className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shadow-emerald-600/30"
+                      className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/30"
                     >
                       <Award className="w-4 h-4 text-emerald-200" />
                       <span>🏆 Sertifikatni Olish</span>
                     </button>
                   ) : (
-                    <div className="px-5 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
+                    <div className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold text-center">
                       🔒 Sertifikat olish uchun kamida 70% natija kerak (Hozir: {Math.round((score / questions.length) * 100)}%)
                     </div>
                   )}

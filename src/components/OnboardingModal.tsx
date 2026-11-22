@@ -91,8 +91,8 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
   const currentTeacher = INITIAL_TEACHERS.find((t) => t.slug === selectedSubject);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="w-full max-w-2xl rounded-3xl bg-[#160d2e] border border-purple-700/50 p-6 sm:p-8 shadow-2xl relative my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="w-full max-w-2xl rounded-2xl sm:rounded-3xl bg-[#160d2e] border border-purple-700/50 p-5 sm:p-8 shadow-2xl relative my-6 sm:my-8">
         {/* Close / Guest browsing button */}
         <button
           onClick={onClose}
@@ -179,7 +179,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
               />
             </div>
 
-            <div className="pt-2 flex items-center justify-between gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -194,7 +194,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
 
               <button
                 type="submit"
-                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-sm shadow-xl shadow-pink-600/30 flex items-center gap-2 transition-all hover:scale-[1.02]"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-sm shadow-xl shadow-pink-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               >
                 <span>Fanni Tanlash</span>
                 <ArrowRight className="w-4 h-4" />

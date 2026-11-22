@@ -162,24 +162,24 @@ export default function TeacherPage() {
   return (
     <main className="min-h-screen bg-[#0d071d] text-slate-100 pb-20">
       {/* Top Header */}
-      <header className="sticky top-0 z-40 bg-[#160d2e]/90 backdrop-blur-md border-b border-purple-900/40 px-4 sm:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-40 bg-[#160d2e]/90 backdrop-blur-md border-b border-purple-900/40 px-3 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <Link
             href="/"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-colors"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-bold transition-colors flex-shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Saytga qaytish</span>
+            <span className="hidden sm:inline">Saytga qaytish</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <GraduationCap className="w-5 h-5 text-pink-400" />
-            <h1 className="text-lg font-black text-white">O‘qituvchi Kabineti</h1>
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+            <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-400 flex-shrink-0" />
+            <h1 className="text-sm sm:text-lg font-black text-white truncate">O‘qituvchi Kabineti</h1>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold border border-white/10 transition-colors"
+          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 text-xs font-bold border border-white/10 transition-colors flex-shrink-0"
         >
           <LogOut className="w-4 h-4" />
           <span>Chiqish</span>
@@ -251,7 +251,7 @@ export default function TeacherPage() {
               });
               setIsNewLesson(true);
             }}
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-sm shadow-xl shadow-pink-600/30 flex items-center gap-2 self-center sm:self-start flex-shrink-0"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-sm shadow-xl shadow-pink-600/30 flex items-center justify-center gap-2 self-center sm:self-start flex-shrink-0"
           >
             <Plus className="w-5 h-5" />
             <span>Yangi Video Dars Yuklash</span>
@@ -259,7 +259,7 @@ export default function TeacherPage() {
         </div>
 
         {/* Teacher Navigation Tabs */}
-        <div className="flex items-center gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto">
+        <div className="flex items-center gap-2 sm:gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto scrollbar-none">
           <button
             onClick={() => setActiveTab('lessons')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${

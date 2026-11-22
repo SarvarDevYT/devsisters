@@ -240,11 +240,11 @@ export default function CommunityChat({ currentUser, className = '' }: Community
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Tab Switcher */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-2 rounded-2xl bg-[#160d2e] border border-purple-900/40">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-2xl bg-[#160d2e] border border-purple-900/40">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
             onClick={() => setActiveTab('chat')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === 'chat'
                 ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-md shadow-pink-600/30'
                 : 'text-slate-400 hover:text-white'
@@ -256,7 +256,7 @@ export default function CommunityChat({ currentUser, className = '' }: Community
 
           <button
             onClick={() => setActiveTab('forum')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === 'forum'
                 ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-md shadow-pink-600/30'
                 : 'text-slate-400 hover:text-white'
@@ -268,7 +268,7 @@ export default function CommunityChat({ currentUser, className = '' }: Community
         </div>
 
         {/* Identity badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 w-full sm:w-auto justify-center sm:justify-start">
           <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
           <span>
             Hisobingiz: <strong className="text-white">{currentUser?.name || 'Mehmon'}</strong>
@@ -331,7 +331,7 @@ export default function CommunityChat({ currentUser, className = '' }: Community
                       : 'bg-[#1a1038]/70 border-purple-800/30'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3 mb-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2.5">
                       <div
                         className={`w-8 h-8 rounded-full bg-gradient-to-tr ${msg.avatar_color} flex items-center justify-center text-white font-bold text-xs shadow-md flex-shrink-0`}
@@ -384,7 +384,7 @@ export default function CommunityChat({ currentUser, className = '' }: Community
                     </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-200 leading-relaxed pl-10">
+                  <p className="text-xs sm:text-sm text-slate-200 leading-relaxed pl-0 sm:pl-10 mt-1">
                     {msg.content}
                   </p>
                 </div>

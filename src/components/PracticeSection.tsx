@@ -41,10 +41,10 @@ export default function PracticeSection({ items }: PracticeSectionProps) {
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex items-center p-1.5 rounded-2xl bg-white/5 border border-white/10">
+          <div className="flex items-center p-1.5 rounded-2xl bg-white/5 border border-white/10 w-full sm:w-auto">
             <button
               onClick={() => setActiveTab('vocabulary')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-center cursor-pointer ${
                 activeTab === 'vocabulary'
                   ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-lg shadow-pink-600/30'
                   : 'text-slate-400 hover:text-white'
@@ -55,7 +55,7 @@ export default function PracticeSection({ items }: PracticeSectionProps) {
             </button>
             <button
               onClick={() => setActiveTab('workout')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-center cursor-pointer ${
                 activeTab === 'workout'
                   ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30'
                   : 'text-slate-400 hover:text-white'

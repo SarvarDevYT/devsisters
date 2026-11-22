@@ -53,16 +53,16 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-purple-600 flex items-center justify-center shadow-lg shadow-pink-500/25 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-6 h-6 text-white" />
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-purple-600 flex items-center justify-center shadow-lg shadow-pink-500/25 group-hover:scale-105 transition-transform flex-shrink-0">
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-2xl font-extrabold tracking-tight text-white">devsisters</span>
-                <span className="text-2xl font-extrabold text-pink-400">.uz</span>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1">
+                <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">devsisters</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-pink-400">.uz</span>
               </div>
-              <p className="text-[11px] font-medium text-pink-300/80 tracking-wide uppercase">
+              <p className="text-[10px] sm:text-[11px] font-medium text-pink-300/80 tracking-wide uppercase truncate">
                 Raqamli avlod qizlar platformasi
               </p>
             </div>

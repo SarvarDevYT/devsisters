@@ -44,7 +44,7 @@ export default function FeaturesSection() {
       textColor: 'text-rose-400',
       bgColor: 'bg-rose-500/10',
       borderColor: 'border-rose-500/20',
-      link: '#hamjamiyat',
+      link: '/login',
       highlighted: true,
     },
   ];

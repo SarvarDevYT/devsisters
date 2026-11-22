@@ -6,18 +6,13 @@ import {
   ShieldCheck,
   Users,
   Video,
-  Award,
   Plus,
   Trash2,
   Edit2,
   Save,
   ArrowLeft,
-  Sparkles,
-  Globe,
   CheckCircle,
   AlertCircle,
-  ExternalLink,
-  Image as ImageIcon,
 } from 'lucide-react';
 import { Teacher, Lesson } from '@/lib/types';
 import { INITIAL_TEACHERS, INITIAL_LESSONS } from '@/lib/data';
@@ -28,7 +23,7 @@ export default function AdminPage() {
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [authError, setAuthError] = useState<string>('');
 
-  const [activeTab, setActiveTab] = useState<'teachers' | 'lessons' | 'domain'>('teachers');
+  const [activeTab, setActiveTab] = useState<'teachers' | 'lessons'>('teachers');
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -359,18 +354,6 @@ export default function AdminPage() {
           >
             <Video className="w-4 h-4" />
             <span>Video Darslar ({lessons.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('domain')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-              activeTab === 'domain'
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30'
-                : 'bg-white/5 text-slate-300 hover:bg-white/10'
-            }`}
-          >
-            <Globe className="w-4 h-4" />
-            <span>Domen & Vercel Deploy</span>
           </button>
         </div>
 
@@ -799,121 +782,6 @@ export default function AdminPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        )}
-
-        {/* TAB 3: DOMAIN & VERCEL DEPLOYMENT INSTRUCTIONS */}
-        {activeTab === 'domain' && (
-          <div className="max-w-4xl space-y-8">
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-[#1a1038] to-[#120a27] border border-emerald-500/30 shadow-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-black text-white">
-                    devsisters.uz Domenini Vercel’ga Ulash
-                  </h3>
-                  <p className="text-xs sm:text-sm text-emerald-300 font-medium">
-                    Ustozingizdagi domenni saytga ulash bo‘yicha to‘liq qadamma-qadam qo‘llanma
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-sm text-slate-300 leading-relaxed mb-6">
-                Siz audio xabarda aytganingizdek, <strong>devsisters.uz</strong> domeni ustozingiz
-                nomiga olingan. Saytni Vercel’ga joylashtirgach, domenni ulash uchun ustozingizga
-                quyidagi 2 ta DNS yozuvini (DNS records) domen paneliga kiritishini aytishingiz
-                kifoya:
-              </p>
-
-              {/* DNS Records Table */}
-              <div className="rounded-2xl bg-black/40 border border-white/10 p-5 mb-8">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-pink-400 mb-3">
-                  Kiritilishi kerak bo‘lgan DNS yozuvlari:
-                </h4>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs sm:text-sm">
-                    <thead>
-                      <tr className="border-b border-white/10 text-slate-400">
-                        <th className="pb-2">Turi (Type)</th>
-                        <th className="pb-2">Nom (Name / Host)</th>
-                        <th className="pb-2">Qiymat (Value / Target)</th>
-                        <th className="pb-2">TTL</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5 text-slate-200">
-                      <tr>
-                        <td className="py-2.5 font-mono text-emerald-400 font-bold">A</td>
-                        <td className="py-2.5 font-mono">@ (yoki bo‘sh)</td>
-                        <td className="py-2.5 font-mono text-pink-300 font-bold">76.76.21.21</td>
-                        <td className="py-2.5 font-mono">Automatic / 3600</td>
-                      </tr>
-                      <tr>
-                        <td className="py-2.5 font-mono text-emerald-400 font-bold">CNAME</td>
-                        <td className="py-2.5 font-mono">www</td>
-                        <td className="py-2.5 font-mono text-pink-300 font-bold">cname.vercel-dns.com</td>
-                        <td className="py-2.5 font-mono">Automatic / 3600</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Step by Step instructions */}
-              <div className="space-y-4">
-                <h4 className="text-base font-bold text-white mb-2">
-                  4 ta oddiy qadam:
-                </h4>
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                  <p className="font-bold text-white text-sm mb-1">
-                    1-qadam: GitHub reposini Vercel’ga ulash
-                  </p>
-                  <p className="text-xs text-slate-300">
-                    <a
-                      href="https://vercel.com/new"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-pink-400 underline inline-flex items-center gap-1"
-                    >
-                      vercel.com <ExternalLink className="w-3 h-3" />
-                    </a>{' '}
-                    saytiga kiring, ushbu repositoriyani import qiling va <strong>Deploy</strong> tugmasini bosing.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                  <p className="font-bold text-white text-sm mb-1">
-                    2-qadam: Vercel Settings bo‘limiga kirish
-                  </p>
-                  <p className="text-xs text-slate-300">
-                    Loyiha deploy bo‘lgach, <strong>Project Settings → Domains</strong> bo‘limiga
-                    o‘ting va u yerga <code className="text-pink-300">devsisters.uz</code> deb yozing.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                  <p className="font-bold text-white text-sm mb-1">
-                    3-qadam: Ustozingizga DNS yozuvlarini yuborish
-                  </p>
-                  <p className="text-xs text-slate-300">
-                    Ustozingiz domenni olgan provayder (masalan, cpanel, reg.uz, eskiz.uz yoki boshqa)
-                    boshqaruv paneliga yuqoridagi <strong>A record (76.76.21.21)</strong> va{' '}
-                    <strong>CNAME (cname.vercel-dns.com)</strong> yozuvlarini kiritadi.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                  <p className="font-bold text-white text-sm mb-1">
-                    4-qadam: Sayt faollashishi
-                  </p>
-                  <p className="text-xs text-slate-300">
-                    DNS yozuvlari qo‘shilgach, 5-15 daqiqa ichida Vercel avtomatik bepul SSL (HTTPS)
-                    sertifikatini ulaydi va sayt to‘g‘ridan-to‘g‘ri ochiladi!
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         )}

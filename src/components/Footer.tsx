@@ -76,7 +76,7 @@ export default function Footer() {
                   className="inline-flex items-center gap-1.5 text-pink-400 hover:text-pink-300 font-semibold transition-colors"
                 >
                   <ShieldCheck className="w-4 h-4" />
-                  <span>Admin Boshqaruv Paneli</span>
+                  <span>Hisobga Kirish</span>
                 </Link>
               </li>
               <li className="text-xs text-slate-500 pt-2">

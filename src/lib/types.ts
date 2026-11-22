@@ -1,3 +1,16 @@
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password?: string;
+  role: 'admin' | 'teacher' | 'student';
+  subject_slug?: string; // For teachers
+  avatar_url?: string;
+  phone?: string;
+  points?: number;
+  created_at?: string;
+}
+
 export interface Teacher {
   id: string;
   name: string;
@@ -61,4 +74,14 @@ export interface CommunityPost {
   content: string;
   likes: number;
   created_at: string;
+}
+
+export interface UserProgress {
+  id: string;
+  user_id: string;
+  lesson_id?: string;
+  quiz_id?: string;
+  quiz_score?: number;
+  completed: boolean;
+  created_at?: string;
 }

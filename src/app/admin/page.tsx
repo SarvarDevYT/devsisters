@@ -13,9 +13,13 @@ import {
   ArrowLeft,
   CheckCircle,
   AlertCircle,
+  KeyRound,
+  UserCheck,
+  User as UserIcon,
 } from 'lucide-react';
-import { Teacher, Lesson } from '@/lib/types';
+import { Teacher, Lesson, User } from '@/lib/types';
 import { INITIAL_TEACHERS, INITIAL_LESSONS } from '@/lib/data';
+import { DEMO_USERS } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminPage() {
@@ -23,9 +27,10 @@ export default function AdminPage() {
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [authError, setAuthError] = useState<string>('');
 
-  const [activeTab, setActiveTab] = useState<'teachers' | 'lessons'>('teachers');
+  const [activeTab, setActiveTab] = useState<'teachers' | 'lessons' | 'users'>('teachers');
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -36,6 +41,10 @@ export default function AdminPage() {
   // Lesson Edit / Create State
   const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
   const [isNewLesson, setIsNewLesson] = useState<boolean>(false);
+
+  // User Edit / Create State
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isNewUser, setIsNewUser] = useState<boolean>(false);
 
   // Check existing session
   useEffect(() => {
@@ -52,7 +61,7 @@ export default function AdminPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        // Try fetch teachers from Supabase
+        // 1. Fetch teachers
         const { data: dbTeachers, error: tErr } = await supabase
           .from('teachers')
           .select('*')
@@ -61,12 +70,11 @@ export default function AdminPage() {
         if (!tErr && dbTeachers && dbTeachers.length > 0) {
           setTeachers(dbTeachers);
         } else {
-          // Check localStorage or fallback to INITIAL_TEACHERS
           const localT = localStorage.getItem('devsisters_teachers');
           setTeachers(localT ? JSON.parse(localT) : INITIAL_TEACHERS);
         }
 
-        // Try fetch lessons from Supabase
+        // 2. Fetch lessons
         const { data: dbLessons, error: lErr } = await supabase
           .from('lessons')
           .select('*')
@@ -78,12 +86,27 @@ export default function AdminPage() {
           const localL = localStorage.getItem('devsisters_lessons');
           setLessons(localL ? JSON.parse(localL) : INITIAL_LESSONS);
         }
+
+        // 3. Fetch users
+        const { data: dbUsers, error: uErr } = await supabase
+          .from('users')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!uErr && dbUsers && dbUsers.length > 0) {
+          setUsers(dbUsers);
+        } else {
+          const localU = localStorage.getItem('devsisters_users_list');
+          setUsers(localU ? JSON.parse(localU) : DEMO_USERS);
+        }
       } catch (err) {
         console.error('Fetch error:', err);
         const localT = localStorage.getItem('devsisters_teachers');
         setTeachers(localT ? JSON.parse(localT) : INITIAL_TEACHERS);
         const localL = localStorage.getItem('devsisters_lessons');
         setLessons(localL ? JSON.parse(localL) : INITIAL_LESSONS);
+        const localU = localStorage.getItem('devsisters_users_list');
+        setUsers(localU ? JSON.parse(localU) : DEMO_USERS);
       } finally {
         setLoading(false);
       }
@@ -95,7 +118,6 @@ export default function AdminPage() {
   // Auth Handler
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Default admin code is 'admin123' or 'devsisters2025'
     if (passwordInput === 'admin123' || passwordInput === 'devsisters2025') {
       setIsAuthenticated(true);
       sessionStorage.setItem('devsisters_admin_auth', 'true');
@@ -124,13 +146,9 @@ export default function AdminPage() {
           display_order: teachers.length + 1,
         };
         updated = [...teachers, newTeacherItem];
-
-        // Supabase insert
         await supabase.from('teachers').insert([newTeacherItem]);
       } else {
         updated = teachers.map((t) => (t.id === editingTeacher.id ? editingTeacher : t));
-
-        // Supabase update
         await supabase
           .from('teachers')
           .update({
@@ -148,8 +166,8 @@ export default function AdminPage() {
       localStorage.setItem('devsisters_teachers', JSON.stringify(updated));
       setEditingTeacher(null);
       setIsNewTeacher(false);
-      setStatusMessage({ type: 'success', text: 'O‘qituvchi ma‘lumotlari va rasmi muvaffaqiyatli saqlandi!' });
-      setTimeout(() => setStatusMessage(null), 4000);
+      setStatusMessage({ type: 'success', text: 'O‘qituvchi ma‘lumotlari saqlandi!' });
+      setTimeout(() => setStatusMessage(null), 3500);
     } catch (err) {
       console.error(err);
       setStatusMessage({ type: 'error', text: 'Saqlashda xatolik yuz berdi.' });
@@ -159,13 +177,11 @@ export default function AdminPage() {
   // Delete Teacher
   const handleDeleteTeacher = async (id: string) => {
     if (!confirm('Haqiqatan ham ushbu o‘qituvchini o‘chirmoqchimisiz?')) return;
-
     try {
       const updated = teachers.filter((t) => t.id !== id);
       setTeachers(updated);
       localStorage.setItem('devsisters_teachers', JSON.stringify(updated));
       await supabase.from('teachers').delete().eq('id', id);
-
       setStatusMessage({ type: 'success', text: 'O‘qituvchi o‘chirildi.' });
       setTimeout(() => setStatusMessage(null), 3000);
     } catch (err) {
@@ -206,7 +222,7 @@ export default function AdminPage() {
       setEditingLesson(null);
       setIsNewLesson(false);
       setStatusMessage({ type: 'success', text: 'Dars ma‘lumotlari muvaffaqiyatli saqlandi!' });
-      setTimeout(() => setStatusMessage(null), 4000);
+      setTimeout(() => setStatusMessage(null), 3500);
     } catch (err) {
       console.error(err);
       setStatusMessage({ type: 'error', text: 'Xatolik yuz berdi.' });
@@ -221,6 +237,60 @@ export default function AdminPage() {
     localStorage.setItem('devsisters_lessons', JSON.stringify(updated));
     await supabase.from('lessons').delete().eq('id', id);
     setStatusMessage({ type: 'success', text: 'Dars o‘chirildi.' });
+    setTimeout(() => setStatusMessage(null), 3000);
+  };
+
+  // Save User
+  const handleSaveUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+
+    try {
+      let updated: User[];
+      if (isNewUser) {
+        const newUserItem: User = {
+          ...editingUser,
+          id: editingUser.id || `u-${Date.now()}`,
+          points: editingUser.points || 100,
+        };
+        updated = [newUserItem, ...users];
+        await supabase.from('users').insert([newUserItem]);
+      } else {
+        updated = users.map((u) => (u.id === editingUser.id ? editingUser : u));
+        await supabase
+          .from('users')
+          .update({
+            name: editingUser.name,
+            email: editingUser.email,
+            password: editingUser.password,
+            role: editingUser.role,
+            phone: editingUser.phone,
+            points: editingUser.points,
+            subject_slug: editingUser.subject_slug,
+          })
+          .eq('id', editingUser.id);
+      }
+
+      setUsers(updated);
+      localStorage.setItem('devsisters_users_list', JSON.stringify(updated));
+      setEditingUser(null);
+      setIsNewUser(false);
+      setStatusMessage({ type: 'success', text: 'Foydalanuvchi ma‘lumotlari va paroli saqlandi!' });
+      setTimeout(() => setStatusMessage(null), 3500);
+    } catch (err) {
+      console.error(err);
+      setStatusMessage({ type: 'error', text: 'Foydalanuvchini saqlashda xatolik yuz berdi.' });
+    }
+  };
+
+  // Delete User
+  const handleDeleteUser = async (id: string) => {
+    if (!confirm('Foydalanuvchini o‘chirishni xohlaysizmi?')) return;
+    const updated = users.filter((u) => u.id !== id);
+    setUsers(updated);
+    localStorage.setItem('devsisters_users_list', JSON.stringify(updated));
+    await supabase.from('users').delete().eq('id', id);
+    setStatusMessage({ type: 'success', text: 'Foydalanuvchi hisobi o‘chirildi.' });
     setTimeout(() => setStatusMessage(null), 3000);
   };
 
@@ -354,6 +424,21 @@ export default function AdminPage() {
           >
             <Video className="w-4 h-4" />
             <span>Video Darslar ({lessons.length})</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('users');
+              setEditingUser(null);
+            }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'users'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10'
+            }`}
+          >
+            <UserCheck className="w-4 h-4" />
+            <span>Foydalanuvchilar & Parollar ({users.length})</span>
           </button>
         </div>
 
@@ -601,7 +686,7 @@ export default function AdminPage() {
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-white">Video Darslar Boshqaruvi</h2>
                 <p className="text-xs sm:text-sm text-slate-400">
-                  Dars qo‘shish, YouTube video havolalarini ulash va darslarni boshqarish.
+                  Dars qo‘shish, video havolalarini ulash va darslarni boshqarish.
                 </p>
               </div>
 
@@ -782,6 +867,277 @@ export default function AdminPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: USERS & PASSWORDS MANAGEMENT */}
+        {activeTab === 'users' && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-white">
+                  Foydalanuvchilar va Login/Parollar Boshqaruvi
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-400">
+                  O‘quvchilar, o‘qituvchilar va administratorlar hisoblarini ko‘rish, tahrirlash hamda parolini o‘zgartirish.
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setEditingUser({
+                    id: '',
+                    name: '',
+                    email: '',
+                    password: '',
+                    role: 'student',
+                    phone: '',
+                    points: 100,
+                  });
+                  setIsNewUser(true);
+                }}
+                className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md shadow-emerald-600/25"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Yangi Foydalanuvchi Qo‘shish</span>
+              </button>
+            </div>
+
+            {/* User Edit / Add Form */}
+            {editingUser && (
+              <div className="mb-10 p-6 sm:p-8 rounded-3xl bg-[#1b1035] border-2 border-emerald-500/50 shadow-2xl">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <Edit2 className="w-5 h-5 text-emerald-400" />
+                    <span>{isNewUser ? 'Yangi foydalanuvchi yaratish' : 'Foydalanuvchi hisobini tahrirlash'}</span>
+                  </h3>
+                  <button
+                    onClick={() => setEditingUser(null)}
+                    className="text-xs text-slate-400 hover:text-white"
+                  >
+                    Bekor qilish ✕
+                  </button>
+                </div>
+
+                <form onSubmit={handleSaveUser} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                      F.I.SH (Ism-Familiya)
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={editingUser.name}
+                      onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                      placeholder="Nilufar Karimova"
+                      className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                      Email (Login)
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={editingUser.email}
+                      onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                      placeholder="foydalanuvchi@devsisters.uz"
+                      className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                      Parol (Kirish uchun)
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={editingUser.password || ''}
+                      onChange={(e) => setEditingUser({ ...editingUser, password: e.target.value })}
+                      placeholder="Yangi parol kiriting..."
+                      className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                      Foydalanuvchi Roli (Darajasi)
+                    </label>
+                    <select
+                      value={editingUser.role}
+                      onChange={(e) =>
+                        setEditingUser({
+                          ...editingUser,
+                          role: e.target.value as 'admin' | 'teacher' | 'student',
+                        })
+                      }
+                      className="w-full px-4 py-3 rounded-2xl bg-[#231545] border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm"
+                    >
+                      <option value="student">O‘quvchi (Student)</option>
+                      <option value="teacher">O‘qituvchi (Teacher)</option>
+                      <option value="admin">Administrator (Admin)</option>
+                    </select>
+                  </div>
+
+                  {editingUser.role === 'teacher' && (
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                        O‘qitadigan Fani
+                      </label>
+                      <select
+                        value={editingUser.subject_slug || 'ingliz-tili'}
+                        onChange={(e) =>
+                          setEditingUser({ ...editingUser, subject_slug: e.target.value })
+                        }
+                        className="w-full px-4 py-3 rounded-2xl bg-[#231545] border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm"
+                      >
+                        {teachers.map((t) => (
+                          <option key={t.slug} value={t.slug}>
+                            {t.subject}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                      Telefon raqam
+                    </label>
+                    <input
+                      type="text"
+                      value={editingUser.phone || ''}
+                      onChange={(e) => setEditingUser({ ...editingUser, phone: e.target.value })}
+                      placeholder="+998 90 123 45 67"
+                      className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
+                      Ballar (Points)
+                    </label>
+                    <input
+                      type="number"
+                      value={editingUser.points || 0}
+                      onChange={(e) =>
+                        setEditingUser({ ...editingUser, points: parseInt(e.target.value) || 0 })
+                      }
+                      className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2 flex items-center justify-end gap-3 pt-4 border-t border-purple-900/40">
+                    <button
+                      type="button"
+                      onClick={() => setEditingUser(null)}
+                      className="px-5 py-2.5 rounded-xl text-slate-400 hover:text-white text-sm font-semibold"
+                    >
+                      Bekor qilish
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-600/30 flex items-center gap-2"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>Saqlash</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {/* Users List Table */}
+            <div className="overflow-x-auto rounded-3xl border border-purple-800/40 bg-[#160d2e]/80">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-purple-900/40 text-slate-400 bg-white/5">
+                    <th className="py-3.5 px-6 font-bold">Foydalanuvchi</th>
+                    <th className="py-3.5 px-4 font-bold">Roli</th>
+                    <th className="py-3.5 px-4 font-bold">Paroli</th>
+                    <th className="py-3.5 px-4 font-bold">Telefon</th>
+                    <th className="py-3.5 px-4 font-bold">Ballari</th>
+                    <th className="py-3.5 px-6 font-bold text-right">Amallar</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-purple-900/30 text-slate-200">
+                  {users.map((user) => {
+                    let roleBadge = 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20';
+                    let roleLabel = 'O‘quvchi';
+
+                    if (user.role === 'admin') {
+                      roleBadge = 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+                      roleLabel = 'Admin';
+                    } else if (user.role === 'teacher') {
+                      roleBadge = 'bg-pink-500/15 text-pink-300 border-pink-500/30';
+                      roleLabel = `Ustoz (${user.subject_slug || 'Fan'})`;
+                    }
+
+                    return (
+                      <tr key={user.id} className="hover:bg-white/5 transition-colors">
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center font-bold text-pink-400">
+                              {user.name.charAt(0)}
+                            </div>
+                            <div>
+                              <p className="font-bold text-white">{user.name}</p>
+                              <p className="text-xs text-slate-400 font-mono">{user.email}</p>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className="py-4 px-4">
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-bold border ${roleBadge}`}
+                          >
+                            {roleLabel}
+                          </span>
+                        </td>
+
+                        <td className="py-4 px-4 font-mono text-xs text-pink-300">
+                          {user.password || '••••••••'}
+                        </td>
+
+                        <td className="py-4 px-4 text-xs text-slate-300">
+                          {user.phone || '—'}
+                        </td>
+
+                        <td className="py-4 px-4 font-bold text-amber-300">
+                          {user.points || 0}
+                        </td>
+
+                        <td className="py-4 px-6 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => {
+                                setEditingUser(user);
+                                setIsNewUser(false);
+                                window.scrollTo({ top: 100, behavior: 'smooth' });
+                              }}
+                              className="p-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 transition-colors"
+                              title="Tahrirlash va parolni yangilash"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteUser(user.id)}
+                              className="p-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 transition-colors"
+                              title="O‘chirish"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         )}

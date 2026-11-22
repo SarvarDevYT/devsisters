@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Lesson, Teacher } from '../lib/types';
 import { Play, Clock, Sparkles, Video, User } from 'lucide-react';
+import { getYouTubeThumbnail, getYouTubeId, YouTubeIcon } from '@/lib/youtube';
 
 interface LessonsSectionProps {
   lessons: Lesson[];
@@ -81,19 +82,32 @@ export default function LessonsSection({
                 {/* Thumbnail / Video Preview Area */}
                 <div
                   onClick={() => onOpenVideo(lesson)}
-                  className="relative aspect-video w-full bg-gradient-to-tr from-purple-950 via-slate-900 to-pink-950 flex items-center justify-center cursor-pointer overflow-hidden"
+                  className="relative aspect-video w-full bg-gradient-to-tr from-purple-950 via-slate-900 to-pink-950 flex items-center justify-center cursor-pointer overflow-hidden group"
                 >
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                  {/* YouTube Video Thumbnail */}
+                  {getYouTubeThumbnail(lesson.video_url) ? (
+                    <img
+                      src={getYouTubeThumbnail(lesson.video_url)}
+                      alt={lesson.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : null}
 
-                  {/* Play Button */}
-                  <div className="w-14 h-14 rounded-full bg-pink-600 text-white flex items-center justify-center shadow-xl shadow-pink-600/40 group-hover:scale-110 transition-transform z-10">
-                    <Play className="w-6 h-6 ml-1 fill-white" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/30 group-hover:via-black/10 transition-colors" />
+
+                  {/* YouTube Styled Play Button */}
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-pink-600 text-white flex items-center justify-center shadow-2xl shadow-red-600/50 group-hover:scale-115 group-hover:shadow-red-600/70 transition-all z-10 border border-white/20">
+                    <Play className="w-6 h-6 ml-0.5 fill-white text-white" />
                   </div>
 
-                  {/* Subject badge top left */}
-                  <div className="absolute top-3 left-3 z-10">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-black/60 backdrop-blur-md text-pink-300 border border-white/10">
+                  {/* Subject badge & YouTube tag top left */}
+                  <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-black/70 backdrop-blur-md text-pink-300 border border-white/10">
                       {teacher?.subject || lesson.subject_slug}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-600/80 text-white flex items-center gap-1 backdrop-blur-md">
+                      <YouTubeIcon className="w-3 h-3 text-white" />
+                      <span>HD</span>
                     </span>
                   </div>
 

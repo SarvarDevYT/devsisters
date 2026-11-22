@@ -24,6 +24,7 @@ import { User, Lesson, Quiz, PracticeItem } from '@/lib/types';
 import { getStoredUser, setStoredUser, updateUserSubject } from '@/lib/auth';
 import { INITIAL_LESSONS, INITIAL_TEACHERS, INITIAL_QUIZZES, INITIAL_PRACTICE } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
+import { getYouTubeThumbnail, YouTubeIcon } from '@/lib/youtube';
 import VideoModal from '@/components/VideoModal';
 import CertificateModal from '@/components/CertificateModal';
 
@@ -315,20 +316,44 @@ export default function StudentPage() {
                   return (
                     <div
                       key={lesson.id}
-                      className={`rounded-3xl p-6 transition-all flex flex-col justify-between border ${
+                      className={`rounded-3xl p-5 sm:p-6 transition-all flex flex-col justify-between border ${
                         isDone
                           ? 'bg-[#15102a] border-emerald-500/40'
                           : 'bg-[#180f30] border-purple-800/40 hover:border-pink-500/40'
                       }`}
                     >
                       <div>
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-pink-500/10 text-pink-300 border border-pink-500/20">
-                            {teacher?.subject || lesson.subject_slug}
-                          </span>
+                        {/* YouTube Video Preview Banner */}
+                        <div
+                          onClick={() => setActiveVideo(lesson)}
+                          className="relative aspect-video w-full rounded-2xl overflow-hidden mb-4 bg-black/60 cursor-pointer group"
+                        >
+                          {getYouTubeThumbnail(lesson.video_url) ? (
+                            <img
+                              src={getYouTubeThumbnail(lesson.video_url)}
+                              alt={lesson.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : null}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/30 group-hover:via-black/10 transition-colors" />
 
-                          <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                            <Clock className="w-3.5 h-3.5 text-pink-400" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-pink-600 text-white flex items-center justify-center shadow-lg group-hover:scale-115 transition-transform border border-white/20">
+                              <Play className="w-5 h-5 ml-0.5 fill-white" />
+                            </div>
+                          </div>
+
+                          <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-black/70 text-pink-300 backdrop-blur-md">
+                              {teacher?.subject || lesson.subject_slug}
+                            </span>
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-600 text-white flex items-center gap-1 backdrop-blur-md">
+                              <YouTubeIcon className="w-2.5 h-2.5 text-white" /> HD
+                            </span>
+                          </div>
+
+                          <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-md text-white text-[10px] font-bold flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-pink-400" />
                             <span>{lesson.duration || '12:00'}</span>
                           </div>
                         </div>
@@ -337,7 +362,7 @@ export default function StudentPage() {
                           {lesson.title}
                         </h4>
 
-                        <p className="text-xs text-slate-300 line-clamp-3 mb-6 leading-relaxed">
+                        <p className="text-xs text-slate-300 line-clamp-2 mb-6 leading-relaxed">
                           {lesson.description}
                         </p>
                       </div>

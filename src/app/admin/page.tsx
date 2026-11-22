@@ -22,6 +22,7 @@ import { Teacher, Lesson, User } from '@/lib/types';
 import { INITIAL_TEACHERS, INITIAL_LESSONS } from '@/lib/data';
 import { DEMO_USERS, getStoredUser, setStoredUser } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
+import { getYouTubeThumbnail, YouTubeIcon } from '@/lib/youtube';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -776,15 +777,34 @@ export default function AdminPage() {
                   key={lesson.id}
                   className="p-5 rounded-2xl bg-[#170e30] border border-purple-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-pink-500/10 text-pink-300 border border-pink-500/20">
-                        {lesson.subject_slug}
-                      </span>
-                      <span className="text-xs text-slate-400">{lesson.duration}</span>
+                  <div className="flex items-start sm:items-center gap-4">
+                    {/* YouTube Video Preview Thumbnail */}
+                    {getYouTubeThumbnail(lesson.video_url) ? (
+                      <div className="relative w-24 h-16 rounded-xl overflow-hidden bg-black/60 flex-shrink-0 border border-white/10">
+                        <img
+                          src={getYouTubeThumbnail(lesson.video_url)}
+                          alt={lesson.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute bottom-1 right-1 px-1 py-0.5 rounded text-[8px] font-bold bg-black/80 text-white">
+                          {lesson.duration || '12:00'}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-pink-500/10 text-pink-300 border border-pink-500/20">
+                          {lesson.subject_slug}
+                        </span>
+                        <span className="text-xs text-slate-400">{lesson.duration}</span>
+                        <span className="text-[10px] text-red-400 font-bold flex items-center gap-0.5">
+                          <YouTubeIcon className="w-3 h-3 text-red-500" /> YouTube
+                        </span>
+                      </div>
+                      <h4 className="text-base font-bold text-white">{lesson.title}</h4>
+                      <p className="text-xs text-slate-300 line-clamp-1">{lesson.description}</p>
                     </div>
-                    <h4 className="text-base font-bold text-white">{lesson.title}</h4>
-                    <p className="text-xs text-slate-300 line-clamp-1">{lesson.description}</p>
                   </div>
 
                   <div className="flex items-center gap-2 flex-shrink-0">

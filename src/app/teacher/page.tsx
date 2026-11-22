@@ -25,6 +25,7 @@ import { User, Lesson, Teacher } from '@/lib/types';
 import { getStoredUser, setStoredUser } from '@/lib/auth';
 import { INITIAL_LESSONS, INITIAL_TEACHERS } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
+import { getYouTubeThumbnail, getYouTubeId, YouTubeIcon } from '@/lib/youtube';
 import VideoModal from '@/components/VideoModal';
 
 export default function TeacherPage() {
@@ -299,8 +300,27 @@ export default function TeacherPage() {
                   className="w-full px-4 py-3 rounded-2xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-pink-500 text-sm"
                 />
                 <p className="text-[11px] text-slate-400 mt-1">
-                  💡 YouTube video havolasi yoki video fayl linkini kiriting. U saytda to‘g‘ridan-to‘g‘ri ochiladi.
+                  💡 YouTube video havolasi (masalan, Unlisted / Yashirin) kiriting. U saytda to‘g‘ridan-to‘g‘ri ochiladi.
                 </p>
+
+                {editingLesson.video_url && getYouTubeId(editingLesson.video_url) && (
+                  <div className="mt-3 p-3 rounded-2xl bg-black/40 border border-purple-800/50 flex items-center gap-3">
+                    <img
+                      src={getYouTubeThumbnail(editingLesson.video_url)}
+                      alt="YouTube Preview"
+                      className="w-24 h-14 rounded-xl object-cover border border-white/10"
+                    />
+                    <div>
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 mb-0.5">
+                        <CheckCircle className="w-3.5 h-3.5" />
+                        <span>YouTube video aniqlandi</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Ushbu video devsisters.uz pleyerida moslashuvchan ravishda to‘g‘ridan-to‘g‘ri ochiladi.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -371,27 +391,46 @@ export default function TeacherPage() {
             {lessons.map((lesson) => (
               <div
                 key={lesson.id}
-                className="rounded-3xl p-6 bg-[#180f30] border border-purple-800/40 hover:border-pink-500/40 transition-all flex flex-col justify-between"
+                className="rounded-3xl p-5 sm:p-6 bg-[#180f30] border border-purple-800/40 hover:border-pink-500/40 transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-pink-500/10 text-pink-300 border border-pink-500/20">
-                      {lesson.duration || '12:00'}
-                    </span>
-                    <button
-                      onClick={() => setPreviewLesson(lesson)}
-                      className="text-xs text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Ko‘rish</span>
-                    </button>
+                  {/* YouTube Thumbnail Preview */}
+                  <div
+                    onClick={() => setPreviewLesson(lesson)}
+                    className="relative aspect-video w-full rounded-2xl overflow-hidden mb-4 bg-black/60 cursor-pointer group"
+                  >
+                    {getYouTubeThumbnail(lesson.video_url) ? (
+                      <img
+                        src={getYouTubeThumbnail(lesson.video_url)}
+                        alt={lesson.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-11 h-11 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <Play className="w-5 h-5 ml-0.5 fill-white" />
+                      </div>
+                    </div>
+
+                    <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white flex items-center gap-1">
+                        <YouTubeIcon className="w-3 h-3 text-white" /> HD
+                      </span>
+                    </div>
+
+                    <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/70 text-white text-[10px] font-bold flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-pink-400" />
+                      <span>{lesson.duration || '12:00'}</span>
+                    </div>
                   </div>
 
                   <h4 className="text-base font-bold text-white mb-2 line-clamp-2">
                     {lesson.title}
                   </h4>
 
-                  <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 mb-6">
+                  <p className="text-xs text-slate-300 leading-relaxed line-clamp-2 mb-6">
                     {lesson.description}
                   </p>
                 </div>

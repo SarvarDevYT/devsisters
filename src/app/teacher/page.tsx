@@ -95,14 +95,17 @@ export default function TeacherPage() {
       let updated: Lesson[];
 
       if (isNewLesson) {
-        const newLessonItem: Lesson = {
-          ...editingLesson,
-          id: `l-${Date.now()}`,
+        const payload = {
+          title: editingLesson.title,
+          description: editingLesson.description,
+          video_url: editingLesson.video_url,
+          duration: editingLesson.duration || '12:00',
           subject_slug: subjectSlug,
           order_num: lessons.length + 1,
         };
-        updated = [...lessons, newLessonItem];
-        await supabase.from('lessons').insert([newLessonItem]);
+        const { data: insData, error: insErr } = await supabase.from('lessons').insert([payload]).select();
+        const savedItem: Lesson = insData && insData[0] ? insData[0] : { ...payload, id: crypto.randomUUID() };
+        updated = [...lessons, savedItem];
       } else {
         updated = lessons.map((l) => (l.id === editingLesson.id ? editingLesson : l));
         await supabase

@@ -17,18 +17,21 @@ import {
   KeyRound,
   UserCheck,
   User as UserIcon,
+  MessageSquare,
 } from 'lucide-react';
 import { Teacher, Lesson, User } from '@/lib/types';
 import { INITIAL_TEACHERS, INITIAL_LESSONS } from '@/lib/data';
 import { DEMO_USERS, getStoredUser, setStoredUser } from '@/lib/auth';
 import { supabase } from '@/lib/supabase';
 import { getYouTubeThumbnail, YouTubeIcon } from '@/lib/youtube';
+import CommunityChat from '@/components/CommunityChat';
 
 export default function AdminPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  const [activeTab, setActiveTab] = useState<'teachers' | 'lessons' | 'users'>('teachers');
+  const [activeTab, setActiveTab] = useState<'teachers' | 'lessons' | 'users' | 'community'>('teachers');
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -55,6 +58,7 @@ export default function AdminPage() {
       return;
     }
     setIsAuthenticated(true);
+    setCurrentUser(user);
   }, [router]);
 
   // Fetch initial data
@@ -381,6 +385,20 @@ export default function AdminPage() {
           >
             <UserCheck className="w-4 h-4" />
             <span>Foydalanuvchilar & Parollar ({users.length})</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('community');
+            }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'community'
+                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>Jonli Chat & Moderatsiya</span>
           </button>
         </div>
 
@@ -1100,6 +1118,13 @@ export default function AdminPage() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* TAB 4: COMMUNITY CHAT & MODERATION */}
+        {activeTab === 'community' && (
+          <div className="animate-fade-in">
+            <CommunityChat currentUser={currentUser} />
           </div>
         )}
       </div>

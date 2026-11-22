@@ -24,6 +24,7 @@ import {
   ChevronRight,
   X,
   HelpCircle,
+  MessageSquare,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { User, Lesson, Quiz, PracticeItem } from '@/lib/types';
@@ -33,11 +34,12 @@ import { supabase } from '@/lib/supabase';
 import { getYouTubeThumbnail, YouTubeIcon } from '@/lib/youtube';
 import VideoModal from '@/components/VideoModal';
 import CertificateModal from '@/components/CertificateModal';
+import CommunityChat from '@/components/CommunityChat';
 
 export default function StudentPage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<'lessons' | 'quizzes' | 'practice'>('lessons');
+  const [activeTab, setActiveTab] = useState<'lessons' | 'quizzes' | 'practice' | 'community'>('lessons');
 
   const [lessons, setLessons] = useState<Lesson[]>(INITIAL_LESSONS);
   const [quizzes, setQuizzes] = useState<Quiz[]>(INITIAL_QUIZZES);
@@ -368,6 +370,18 @@ export default function StudentPage() {
             <Dumbbell className="w-4 h-4" />
             <span>Lug‘at & Mashqlar ({displayedPractice.length})</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab('community')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'community'
+                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>Jonli Chat & Muhokama</span>
+          </button>
         </div>
 
         {/* TAB 1: LESSONS */}
@@ -691,6 +705,13 @@ export default function StudentPage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* TAB 4: COMMUNITY CHAT & FORUM */}
+        {activeTab === 'community' && (
+          <div className="animate-fade-in">
+            <CommunityChat currentUser={currentUser} />
           </div>
         )}
       </div>

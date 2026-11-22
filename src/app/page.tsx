@@ -9,7 +9,6 @@ import LessonsSection from '@/components/LessonsSection';
 import WebinarsSection from '@/components/WebinarsSection';
 import QuizSection from '@/components/QuizSection';
 import PracticeSection from '@/components/PracticeSection';
-import CommunitySection from '@/components/CommunitySection';
 import RoadmapSection from '@/components/RoadmapSection';
 import Footer from '@/components/Footer';
 import VideoModal from '@/components/VideoModal';
@@ -200,8 +199,6 @@ export default function Home() {
         />
 
         <PracticeSection items={practiceItems} />
-
-        <CommunitySection posts={communityPosts} onAddPost={handleAddPost} />
 
         <RoadmapSection />
       </main>

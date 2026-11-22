@@ -20,6 +20,7 @@ import {
   LogOut,
   User as UserIcon,
   BookOpen,
+  MessageSquare,
 } from 'lucide-react';
 import { User, Lesson, Teacher } from '@/lib/types';
 import { getStoredUser, setStoredUser } from '@/lib/auth';
@@ -27,10 +28,12 @@ import { INITIAL_LESSONS, INITIAL_TEACHERS } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
 import { getYouTubeThumbnail, getYouTubeId, YouTubeIcon } from '@/lib/youtube';
 import VideoModal from '@/components/VideoModal';
+import CommunityChat from '@/components/CommunityChat';
 
 export default function TeacherPage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [activeTab, setActiveTab] = useState<'lessons' | 'community'>('lessons');
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -252,7 +255,40 @@ export default function TeacherPage() {
           </button>
         </div>
 
-        {/* Lesson Editor / Upload Form */}
+        {/* Teacher Navigation Tabs */}
+        <div className="flex items-center gap-3 mb-8 border-b border-purple-900/40 pb-4 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab('lessons')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'lessons'
+                ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10'
+            }`}
+          >
+            <Video className="w-4 h-4" />
+            <span>Darslarim ({lessons.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('community')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+              activeTab === 'community'
+                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/30'
+                : 'bg-white/5 text-slate-300 hover:bg-white/10'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>Jonli Chat & O‘quvchilar bilan muloqot</span>
+          </button>
+        </div>
+
+        {activeTab === 'community' ? (
+          <div className="animate-fade-in">
+            <CommunityChat currentUser={currentUser} />
+          </div>
+        ) : (
+          <div>
+            {/* Lesson Editor / Upload Form */}
         {editingLesson && (
           <div className="mb-10 p-6 sm:p-8 rounded-3xl bg-[#1b1035] border-2 border-pink-500/50 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
@@ -488,6 +524,8 @@ export default function TeacherPage() {
           )}
         </div>
       </div>
+    )}
+  </div>
 
       {/* Video Modal Preview */}
       <VideoModal

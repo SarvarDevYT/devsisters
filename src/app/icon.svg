@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="devsisters-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#db2777" />
+      <stop offset="48%" stop-color="#e11d48" />
+      <stop offset="100%" stop-color="#9333ea" />
+    </linearGradient>
+    <radialGradient id="star-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect x="24" y="24" width="464" height="464" rx="124" fill="url(#devsisters-grad)" />
+  <rect x="24" y="24" width="464" height="464" rx="124" fill="none" stroke="#ffffff" stroke-opacity="0.25" stroke-width="8" />
+
+  <!-- Center Glow -->
+  <circle cx="240" cy="270" r="180" fill="url(#star-glow)" />
+
+  <!-- Main Sparkle Star (Astroid Curve) -->
+  <path d="M 240 130 C 240 215 285 270 380 270 C 285 270 240 325 240 410 C 240 325 195 270 100 270 C 195 270 240 215 240 130 Z" fill="#ffffff" />
+
+  <!-- Secondary Sparkle Star (Top Right) -->
+  <path d="M 375 105 C 375 135 390 150 425 150 C 390 150 375 165 375 195 C 375 165 360 150 325 150 C 360 150 375 135 375 105 Z" fill="#fde047" />
+
+  <!-- Minor Accent Star (Bottom Left) -->
+  <path d="M 125 385 C 125 400 133 410 150 410 C 133 410 125 420 125 435 C 125 420 117 410 100 410 C 117 410 125 400 125 385 Z" fill="#ffffff" opacity="0.9" />
+</svg>
